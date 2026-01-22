@@ -1,0 +1,22 @@
+{
+  "app_name": "Women Safety Analytics",
+  "version": "1.0.0",
+  "api": {
+    "host": "localhost",
+    "port": 5000,
+    "endpoints": {
+      "threat_detection": "/api/threat-detection",
+      "emergency_alert": "/api/emergency-alert"
+    }
+  },
+  "ai_models": {
+    "threat_detector": {
+      "confidence_threshold": 0.7,
+      "max_threat_level": 10
+    }
+  },
+  "emergency": {
+    "contacts": ["911", "emergency@safety.com"],
+    "auto_alert_threshold": 8
+  }
+}

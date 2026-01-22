@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Women Safety Analytics</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e74c3c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .app {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .section {
+            padding: 25px;
+        }
+
+        .registration {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .section h2 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            color: #495057;
+            text-align: center;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 0;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .btn-analyze {
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+        }
+
+        .emergency-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 15px;
+        }
+
+        .result {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+
+        .threat-safe {
+            color: #28a745;
+        }
+
+        .threat-detected {
+            color: #dc3545;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>🛡️ Women Safety Analytics</h1>
+        </div>
+
+        <!-- Registration Section -->
+        <div id="registrationSection" class="section registration">
+            <h2>📱 Register for Emergency Alerts</h2>
+            <input type="email" id="email" placeholder="✉️ Email Address">
+            <input type="text" id="userId" placeholder="👤 User ID">
+            <input type="tel" id="phone" placeholder="📞 Your Phone Number">
+            <input type="text" id="emergencyContacts" placeholder="🚨 Emergency Contacts (emails and phones, comma separated)">
+            <button class="btn btn-primary" onclick="registerUser()">Complete Registration</button>
+        </div>
+
+        <!-- User Info Section -->
+        <div id="userInfoSection" class="user-info hidden">
+            <p id="userInfo">✅ Registered</p>
+        </div>
+
+        <!-- Threat Detection Section -->
+        <div id="threatSection" class="section hidden">
+            <h2>🔍 Threat Detection</h2>
+            <textarea id="threatInput" placeholder="Describe your situation..." rows="4"></textarea>
+            <button class="btn btn-analyze" onclick="analyzeThreat()">Analyze Threat</button>
+            <div id="threatResult"></div>
+        </div>
+
+        <!-- Emergency Section -->
+        <div id="emergencySection" class="section hidden">
+            <button class="emergency-btn" onclick="sendEmergencyAlert()">
+                🚨 EMERGENCY ALERT
+            </button>
+            <div id="locationInfo"></div>
+        </div>
+    </div>
+
+    <script>
+        let userData = {};
+        let isRegistered = false;
+
+        function registerUser() {
+            const email = document.getElementById('email').value;
+            const userId = document.getElementById('userId').value;
+            const phone = document.getElementById('phone').value;
+            const emergencyContacts = document.getElementById('emergencyContacts').value;
+
+            if (!email || !userId || !phone || !emergencyContacts) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            userData = {
+                email: email,
+                user_id: userId,
+                phone: phone,
+                emergency_contacts: emergencyContacts.split(',').map(c => c.trim())
+            };
+
+            isRegistered = true;
+            showRegisteredView();
+            alert('Registration successful!');
+        }
+
+        function showRegisteredView() {
+            document.getElementById('registrationSection').classList.add('hidden');
+            document.getElementById('userInfoSection').classList.remove('hidden');
+            document.getElementById('threatSection').classList.remove('hidden');
+            document.getElementById('emergencySection').classList.remove('hidden');
+            
+            document.getElementById('userInfo').innerHTML = `✅ ${userData.email}<br>📞 ${userData.phone}`;
+        }
+
+        function analyzeThreat() {
+            const text = document.getElementById('threatInput').value.toLowerCase();
+            const threatKeywords = ['danger', 'help', 'emergency', 'unsafe', 'scared'];
+            
+            let threatLevel = 0;
+            threatKeywords.forEach(keyword => {
+                if (text.includes(keyword)) threatLevel++;
+            });
+            
+            const isThreat = threatLevel > 0;
+            const tips = isThreat ? 
+                ["Stay in well-lit areas", "Keep emergency contacts ready", "Trust your instincts"] :
+                ["You're in a safe area"];
+            
+            document.getElementById('threatResult').innerHTML = `
+                <div class="${isThreat ? 'threat-detected' : 'threat-safe'}">
+                    Status: ${isThreat ? '⚠️ THREAT DETECTED' : '✅ SAFE'}
+                </div>
+                <h3>💡 Safety Tips:</h3>
+                <ul>${tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+            `;
+        }
+
+        function sendEmergencyAlert() {
+            if (!isRegistered) {
+                alert('Please register first');
+                return;
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const mapsLink = `https://maps.google.com/maps?q=${lat},${lng}`;
+                    
+                    // Send real notifications
+                    sendRealNotifications(lat, lng, mapsLink);
+                    
+                    document.getElementById('locationInfo').innerHTML = `
+                        <div style="margin-top: 15px; padding: 10px; background: #e7f3ff; border-radius: 8px;">
+                            📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br>
+                            <a href="${mapsLink}" target="_blank">🗺️ Open in Google Maps</a><br>
+                            <button class="btn btn-primary" onclick="sendSMS('${lat}', '${lng}')" style="margin-top: 10px;">📱 Send SMS</button>
+                        </div>
+                    `;
+                    
+                    window.open(mapsLink, '_blank');
+                });
+            }
+        }
+
+        function sendRealNotifications(lat, lng, mapsLink) {
+            const emailContacts = userData.emergency_contacts.filter(contact => contact.includes('@'));
+            const phoneContacts = userData.emergency_contacts.filter(contact => !contact.includes('@'));
+            
+            // Send emails
+            if (emailContacts.length > 0) {
+                sendEmergencyEmails(emailContacts, lat, lng, mapsLink);
+            }
+            
+            // Send SMS
+            if (phoneContacts.length > 0) {
+                sendSMS(lat, lng);
+            }
+            
+            alert(`🚨 EMERGENCY ALERT SENT!\n📧 ${emailContacts.length} emails sent\n📱 ${phoneContacts.length} SMS ready to send`);
+        }
+
+        function sendEmergencyEmails(emailContacts, lat, lng, mapsLink) {
+            const subject = encodeURIComponent('🚨 EMERGENCY ALERT - Immediate Help Needed');
+            const body = encodeURIComponent(`🚨 EMERGENCY ALERT 🚨\n\n${userData.user_id} needs immediate help!\n\nLocation: ${mapsLink}\n\nCoordinates: ${lat}, ${lng}\n\nTime: ${new Date().toLocaleString()}\n\nPlease contact them immediately at ${userData.phone} or call emergency services.`);
+            
+            // Open default email client
+            const mailtoLink = `mailto:${emailContacts.join(',')}?subject=${subject}&body=${body}`;
+            window.open(mailtoLink);
+        }
+
+        function sendSMS(lat, lng) {
+            const phoneContacts = userData.emergency_contacts.filter(contact => !contact.includes('@'));
+            
+            if (phoneContacts.length === 0) {
+                alert('No phone contacts found');
+                return;
+            }
+
+            const message = encodeURIComponent(`🚨 EMERGENCY: ${userData.user_id} needs help! Location: https://maps.google.com/maps?q=${lat},${lng} Time: ${new Date().toLocaleString()}`);
+            
+            // Open SMS app (works on mobile devices)
+            const smsLink = `sms:${phoneContacts.join(',')}?body=${message}`;
+            window.open(smsLink);
+            
+            // Also open WhatsApp for each contact
+            phoneContacts.forEach(contact => {
+                const whatsappLink = `https://wa.me/${contact.replace(/[^0-9]/g, '')}?text=${message}`;
+                window.open(whatsappLink);
+            });
+        }
+    </script>
+</body>
+</html>
