@@ -595,10 +595,7 @@
           return;
         }
 
-        // Send immediate SMS notifications
-        sendImmediateSMS();
-
-        // Get GPS location for email with location
+        // Get GPS location first for email
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             function (position) {
@@ -606,8 +603,13 @@
               const lng = position.coords.longitude;
               const mapsLink = `https://maps.google.com/maps?q=${lat},${lng}`;
 
-              // Send email with location
+              // Send email with location FIRST
               sendEmailWithLocation(lat, lng, mapsLink);
+
+              // Then send SMS
+              setTimeout(() => {
+                sendSMSWithLocation(lat, lng, mapsLink);
+              }, 1000);
 
               // Update location info display
               document.getElementById("locationInfo").innerHTML = `
@@ -621,13 +623,33 @@
               window.open(mapsLink, "_blank");
             },
             function (error) {
-              console.log("GPS unavailable, sending email without location");
+              console.log("GPS unavailable, sending alerts without location");
               sendEmailWithoutLocation();
+              setTimeout(() => sendImmediateSMS(), 1000);
             },
           );
         } else {
           sendEmailWithoutLocation();
+          setTimeout(() => sendImmediateSMS(), 1000);
         }
+      }
+
+      function sendSMSWithLocation(lat, lng, mapsLink) {
+        const timestamp = new Date().toLocaleString();
+
+        if (userData.emergency_phone) {
+          const smsMessage = encodeURIComponent(
+            `🚨 EMERGENCY: ${userData.user_id} needs help! Location: ${mapsLink} Time: ${timestamp} Contact: ${userData.phone}`,
+          );
+          const smsLink = `sms:${userData.emergency_phone}?body=${smsMessage}`;
+          window.open(smsLink);
+
+          // WhatsApp notification
+          const whatsappLink = `https://wa.me/${userData.emergency_phone.replace(/[^0-9]/g, "")}?text=${smsMessage}`;
+          setTimeout(() => window.open(whatsappLink), 1000);
+        }
+
+        showNotification("📱 SMS sent with location!", "success");
       }
 
       function sendImmediateSMS() {
@@ -665,9 +687,9 @@
           window.open(mailtoLink);
         }
 
-        showNotification("📧 Email sent with location!", "success");
+        showNotification("📧 Email sent with location FIRST!", "success");
         alert(
-          `🚨 EMERGENCY ALERT SENT!\n📧 Email: ${userData.emergency_email} (with location)\n📱 SMS: ${userData.emergency_phone}`,
+          `🚨 EMERGENCY ALERT SENT!\n1️⃣ Email: ${userData.emergency_email} (with location)\n2️⃣ SMS: ${userData.emergency_phone} (sending next...)`,
         );
       }
 
