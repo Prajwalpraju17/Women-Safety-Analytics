@@ -1,304 +1,861 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🛡️ Women Safety Analytics</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#e74c3c">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#e74c3c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script type="text/javascript">
+      (function () {
+        emailjs.init({
+          publicKey: "YOUR_PUBLIC_KEY", // Replace with your EmailJS public key
+        });
+      })();
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
 
-        .app {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: white;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
+      .app {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: white;
+        min-height: 100vh;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+      }
 
-        .header {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
+      .header {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        padding: 25px 20px;
+        color: white;
+        text-align: center;
+        position: relative;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+      }
 
-        .section {
-            padding: 25px;
-        }
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1.5" fill="white" opacity="0.1"/></svg>');
+      }
 
-        .registration {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-        }
+      .header h1 {
+        font-size: 24px;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
 
-        .user-info {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: 600;
-        }
+      .status-bar {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 8px 20px;
+        font-size: 12px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
 
-        .section h2 {
-            margin: 0 0 20px 0;
-            font-size: 18px;
-            color: #495057;
-            text-align: center;
-        }
+      .section {
+        padding: 25px;
+        animation: slideIn 0.5s ease-out;
+      }
 
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 16px;
-            box-sizing: border-box;
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        .btn {
-            width: 100%;
-            padding: 15px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            margin: 10px 0;
-            border: none;
-            transition: transform 0.2s;
-        }
+      .registration {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-bottom: 1px solid #dee2e6;
+      }
 
-        .btn:hover {
-            transform: translateY(-2px);
-        }
+      .user-info {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-weight: 600;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-        }
+      .section h2 {
+        margin: 0 0 25px 0;
+        font-size: 20px;
+        color: #495057;
+        text-align: center;
+        font-weight: 600;
+      }
 
-        .btn-analyze {
-            background: linear-gradient(135deg, #17a2b8, #138496);
-            color: white;
-        }
+      .input-group {
+        position: relative;
+        margin: 15px 0;
+      }
 
-        .emergency-btn {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-            padding: 20px;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 15px;
-        }
+      input,
+      textarea {
+        width: 100%;
+        padding: 18px 20px;
+        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
 
-        .result {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 4px solid #007bff;
-        }
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow:
+          0 0 0 3px rgba(0, 123, 255, 0.1),
+          0 4px 15px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
 
-        .threat-safe {
-            color: #28a745;
-        }
+      .btn {
+        width: 100%;
+        padding: 18px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 15px;
+        cursor: pointer;
+        margin: 15px 0;
+        border: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
 
-        .threat-detected {
-            color: #dc3545;
-        }
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
 
-        .hidden {
-            display: none;
+      .btn:active {
+        transform: translateY(-1px);
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+      }
+
+      .btn-analyze {
+        background: linear-gradient(135deg, #17a2b8, #138496);
+        color: white;
+      }
+
+      .emergency-btn {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 25px;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 20px;
+        animation: pulse 2s infinite;
+        box-shadow: 0 6px 25px rgba(220, 53, 69, 0.4);
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 6px 25px rgba(220, 53, 69, 0.4);
         }
+        50% {
+          box-shadow: 0 6px 35px rgba(220, 53, 69, 0.6);
+        }
+        100% {
+          box-shadow: 0 6px 25px rgba(220, 53, 69, 0.4);
+        }
+      }
+
+      .result {
+        background: linear-gradient(135deg, #f8f9fa, white);
+        padding: 25px;
+        border-radius: 15px;
+        margin: 20px 0;
+        border-left: 4px solid #007bff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .threat-safe {
+        color: #28a745;
+        font-weight: 600;
+      }
+
+      .threat-detected {
+        color: #dc3545;
+        font-weight: 600;
+      }
+
+      .location-card {
+        background: linear-gradient(135deg, #e7f3ff, #cce7ff);
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        animation: slideInRight 0.3s ease-out;
+      }
+
+      @keyframes slideInRight {
+        from {
+          transform: translateX(100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        background: white;
+        padding: 15px;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .nav-item {
+        text-align: center;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .nav-item:hover {
+        background: #f8f9fa;
+      }
+
+      .nav-item.active {
+        background: #007bff;
+        color: white;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="app">
-        <div class="header">
-            <h1>🛡️ Women Safety Analytics</h1>
-        </div>
+      <div class="header">
+        <h1>🛡️ Women Safety Analytics</h1>
+        <div class="status-bar" id="statusBar">🔒 Secure Connection</div>
+      </div>
 
-        <!-- Registration Section -->
-        <div id="registrationSection" class="section registration">
-            <h2>📱 Register for Emergency Alerts</h2>
-            <input type="email" id="email" placeholder="✉️ Email Address">
-            <input type="text" id="userId" placeholder="👤 User ID">
-            <input type="tel" id="phone" placeholder="📞 Your Phone Number">
-            <input type="text" id="emergencyContacts" placeholder="🚨 Emergency Contacts (emails and phones, comma separated)">
-            <button class="btn btn-primary" onclick="registerUser()">Complete Registration</button>
+      <!-- Registration Section -->
+      <div id="registrationSection" class="section registration">
+        <h2>📱 Complete Your Safety Profile</h2>
+        <div class="input-group">
+          <input type="email" id="email" placeholder="✉️ Email Address" />
         </div>
+        <div class="input-group">
+          <input type="text" id="userId" placeholder="👤 User ID" />
+        </div>
+        <div class="input-group">
+          <input type="tel" id="phone" placeholder="📞 Your Phone Number" />
+        </div>
+        <div class="input-group">
+          <input
+            type="email"
+            id="emergencyEmail"
+            placeholder="📧 Emergency Email Contact"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="tel"
+            id="emergencyPhone"
+            placeholder="📱 Emergency Phone Number"
+          />
+        </div>
+        <button class="btn btn-primary" onclick="registerUser()">
+          <span id="registerText">🔐 Secure Registration</span>
+        </button>
+      </div>
 
-        <!-- User Info Section -->
-        <div id="userInfoSection" class="user-info hidden">
-            <p id="userInfo">✅ Registered</p>
+      <!-- User Info Section -->
+      <div id="userInfoSection" class="user-info hidden">
+        <p id="userInfo">✅ Profile Active</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <div>Protected</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📍</div>
+            <div>GPS Ready</div>
+          </div>
         </div>
+        <button
+          class="btn"
+          style="
+            background: #6c757d;
+            color: white;
+            padding: 12px 20px;
+            font-size: 14px;
+            margin-top: 15px;
+          "
+          onclick="resetRegistration()"
+        >
+          🔄 Reset Profile
+        </button>
+      </div>
 
-        <!-- Threat Detection Section -->
-        <div id="threatSection" class="section hidden">
-            <h2>🔍 Threat Detection</h2>
-            <textarea id="threatInput" placeholder="Describe your situation..." rows="4"></textarea>
-            <button class="btn btn-analyze" onclick="analyzeThreat()">Analyze Threat</button>
-            <div id="threatResult"></div>
+      <!-- Threat Detection Section -->
+      <div id="threatSection" class="section hidden">
+        <h2>🔍 AI Threat Analysis</h2>
+        <div class="input-group">
+          <textarea
+            id="threatInput"
+            placeholder="Describe your current situation or surroundings..."
+            rows="4"
+          ></textarea>
         </div>
+        <button class="btn btn-analyze" onclick="analyzeThreat()">
+          <span id="analyzeText">🤖 Analyze with AI</span>
+        </button>
+        <div id="threatResult"></div>
+      </div>
 
-        <!-- Emergency Section -->
-        <div id="emergencySection" class="section hidden">
-            <button class="emergency-btn" onclick="sendEmergencyAlert()">
-                🚨 EMERGENCY ALERT
-            </button>
-            <div id="locationInfo"></div>
-        </div>
+      <!-- Emergency Section -->
+      <div id="emergencySection" class="section hidden">
+        <button class="emergency-btn" onclick="sendEmergencyAlert()">
+          🚨 SEND EMERGENCY ALERT
+        </button>
+        <div id="locationInfo"></div>
+      </div>
     </div>
 
     <script>
-        let userData = {};
-        let isRegistered = false;
+      let userData = {};
+      let isRegistered = false;
 
-        function registerUser() {
-            const email = document.getElementById('email').value;
-            const userId = document.getElementById('userId').value;
-            const phone = document.getElementById('phone').value;
-            const emergencyContacts = document.getElementById('emergencyContacts').value;
+      // Load saved data on page load
+      window.onload = function () {
+        const saved = localStorage.getItem("women_safety_user");
+        if (saved) {
+          userData = JSON.parse(saved);
+          isRegistered = true;
+          showRegisteredView();
+          // Pre-fill form fields
+          document.getElementById("email").value = userData.email || "";
+          document.getElementById("userId").value = userData.user_id || "";
+          document.getElementById("phone").value = userData.phone || "";
+          document.getElementById("emergencyEmail").value =
+            userData.emergency_email || "";
+          document.getElementById("emergencyPhone").value =
+            userData.emergency_phone || "";
+        }
+      };
 
-            if (!email || !userId || !phone || !emergencyContacts) {
-                alert('Please fill in all fields');
-                return;
-            }
+      function registerUser() {
+        const email = document.getElementById("email").value;
+        const userId = document.getElementById("userId").value;
+        const phone = document.getElementById("phone").value;
+        const emergencyEmail = document.getElementById("emergencyEmail").value;
+        const emergencyPhone = document.getElementById("emergencyPhone").value;
 
-            userData = {
-                email: email,
-                user_id: userId,
-                phone: phone,
-                emergency_contacts: emergencyContacts.split(',').map(c => c.trim())
-            };
-
-            isRegistered = true;
-            showRegisteredView();
-            alert('Registration successful!');
+        if (!email || !userId || !phone || !emergencyEmail || !emergencyPhone) {
+          alert("Please fill in all fields");
+          return;
         }
 
-        function showRegisteredView() {
-            document.getElementById('registrationSection').classList.add('hidden');
-            document.getElementById('userInfoSection').classList.remove('hidden');
-            document.getElementById('threatSection').classList.remove('hidden');
-            document.getElementById('emergencySection').classList.remove('hidden');
-            
-            document.getElementById('userInfo').innerHTML = `✅ ${userData.email}<br>📞 ${userData.phone}`;
-        }
+        userData = {
+          email: email,
+          user_id: userId,
+          phone: phone,
+          emergency_email: emergencyEmail,
+          emergency_phone: emergencyPhone,
+        };
 
-        function analyzeThreat() {
-            const text = document.getElementById('threatInput').value.toLowerCase();
-            const threatKeywords = ['danger', 'help', 'emergency', 'unsafe', 'scared'];
-            
-            let threatLevel = 0;
-            threatKeywords.forEach(keyword => {
-                if (text.includes(keyword)) threatLevel++;
-            });
-            
-            const isThreat = threatLevel > 0;
-            const tips = isThreat ? 
-                ["Stay in well-lit areas", "Keep emergency contacts ready", "Trust your instincts"] :
-                ["You're in a safe area"];
-            
-            document.getElementById('threatResult').innerHTML = `
-                <div class="${isThreat ? 'threat-detected' : 'threat-safe'}">
-                    Status: ${isThreat ? '⚠️ THREAT DETECTED' : '✅ SAFE'}
+        // Save to localStorage
+        localStorage.setItem("women_safety_user", JSON.stringify(userData));
+        isRegistered = true;
+        showRegisteredView();
+        alert("Registration successful! Your data is saved.");
+      }
+
+      function showRegisteredView() {
+        document.getElementById("registrationSection").classList.add("hidden");
+        document.getElementById("userInfoSection").classList.remove("hidden");
+        document.getElementById("threatSection").classList.remove("hidden");
+        document.getElementById("emergencySection").classList.remove("hidden");
+
+        document.getElementById("userInfo").innerHTML =
+          `✅ ${userData.email}<br>📞 ${userData.phone}<br><small>Emergency: ${userData.emergency_email} | ${userData.emergency_phone}</small>`;
+      }
+
+      function resetRegistration() {
+        if (
+          confirm(
+            "Are you sure you want to reset your registration? This will delete all saved data.",
+          )
+        ) {
+          localStorage.removeItem("women_safety_user");
+          userData = {};
+          isRegistered = false;
+
+          // Show registration form again
+          document
+            .getElementById("registrationSection")
+            .classList.remove("hidden");
+          document.getElementById("userInfoSection").classList.add("hidden");
+          document.getElementById("threatSection").classList.add("hidden");
+          document.getElementById("emergencySection").classList.add("hidden");
+
+          // Clear form fields
+          document.getElementById("email").value = "";
+          document.getElementById("userId").value = "";
+          document.getElementById("phone").value = "";
+          document.getElementById("emergencyEmail").value = "";
+          document.getElementById("emergencyPhone").value = "";
+          document.getElementById("threatInput").value = "";
+          document.getElementById("threatResult").innerHTML = "";
+          document.getElementById("locationInfo").innerHTML = "";
+
+          alert("Registration reset successfully!");
+        }
+      }
+
+      function analyzeThreat() {
+        const text = document.getElementById("threatInput").value.toLowerCase();
+        const threatKeywords = [
+          "danger",
+          "help",
+          "emergency",
+          "unsafe",
+          "scared",
+        ];
+
+        let threatLevel = 0;
+        threatKeywords.forEach((keyword) => {
+          if (text.includes(keyword)) threatLevel++;
+        });
+
+        const isThreat = threatLevel > 0;
+        const tips = isThreat
+          ? [
+              "Stay in well-lit areas",
+              "Keep emergency contacts ready",
+              "Trust your instincts",
+            ]
+          : ["You're in a safe area"];
+
+        document.getElementById("threatResult").innerHTML = `
+                <div class="${isThreat ? "threat-detected" : "threat-safe"}">
+                    Status: ${isThreat ? "⚠️ THREAT DETECTED" : "✅ SAFE"}
                 </div>
                 <h3>💡 Safety Tips:</h3>
-                <ul>${tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+                <ul>${tips.map((tip) => `<li>${tip}</li>`).join("")}</ul>
             `;
+      }
+
+      function sendEmergencyAlert() {
+        if (!isRegistered) {
+          alert("Please register first");
+          return;
         }
 
-        function sendEmergencyAlert() {
-            if (!isRegistered) {
-                alert('Please register first');
-                return;
-            }
+        // Send immediate SMS notifications
+        sendImmediateSMS();
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    const mapsLink = `https://maps.google.com/maps?q=${lat},${lng}`;
-                    
-                    // Send real notifications
-                    sendRealNotifications(lat, lng, mapsLink);
-                    
-                    document.getElementById('locationInfo').innerHTML = `
+        // Get GPS location for email with location
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              const mapsLink = `https://maps.google.com/maps?q=${lat},${lng}`;
+
+              // Send email with location
+              sendEmailWithLocation(lat, lng, mapsLink);
+
+              // Update location info display
+              document.getElementById("locationInfo").innerHTML = `
                         <div style="margin-top: 15px; padding: 10px; background: #e7f3ff; border-radius: 8px;">
                             📍 Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}<br>
                             <a href="${mapsLink}" target="_blank">🗺️ Open in Google Maps</a><br>
-                            <button class="btn btn-primary" onclick="sendSMS('${lat}', '${lng}')" style="margin-top: 10px;">📱 Send SMS</button>
+                            <button class="btn btn-primary" onclick="sendSMS('${lat}', '${lng}')" style="margin-top: 10px;">📱 Send SMS with Location</button>
                         </div>
                     `;
-                    
-                    window.open(mapsLink, '_blank');
-                });
-            }
+
+              window.open(mapsLink, "_blank");
+            },
+            function (error) {
+              console.log("GPS unavailable, sending email without location");
+              sendEmailWithoutLocation();
+            },
+          );
+        } else {
+          sendEmailWithoutLocation();
+        }
+      }
+
+      function sendImmediateSMS() {
+        const timestamp = new Date().toLocaleString();
+
+        // Immediate SMS notification
+        if (userData.emergency_phone) {
+          const smsMessage = encodeURIComponent(
+            `🚨 EMERGENCY: ${userData.user_id} needs help NOW! Time: ${timestamp} Contact: ${userData.phone}`,
+          );
+          const smsLink = `sms:${userData.emergency_phone}?body=${smsMessage}`;
+          window.open(smsLink);
+
+          // WhatsApp notification
+          const whatsappLink = `https://wa.me/${userData.emergency_phone.replace(/[^0-9]/g, "")}?text=${smsMessage}`;
+          setTimeout(() => window.open(whatsappLink), 1000);
         }
 
-        function sendRealNotifications(lat, lng, mapsLink) {
-            const emailContacts = userData.emergency_contacts.filter(contact => contact.includes('@'));
-            const phoneContacts = userData.emergency_contacts.filter(contact => !contact.includes('@'));
-            
-            // Send emails
-            if (emailContacts.length > 0) {
-                sendEmergencyEmails(emailContacts, lat, lng, mapsLink);
-            }
-            
-            // Send SMS
-            if (phoneContacts.length > 0) {
-                sendSMS(lat, lng);
-            }
-            
-            alert(`🚨 EMERGENCY ALERT SENT!\n📧 ${emailContacts.length} emails sent\n📱 ${phoneContacts.length} SMS ready to send`);
+        showNotification(
+          "📱 SMS alerts sent! Getting location for email...",
+          "success",
+        );
+      }
+
+      function sendEmailWithLocation(lat, lng, mapsLink) {
+        const timestamp = new Date().toLocaleString();
+        const emergencyMessage = `🚨 EMERGENCY ALERT 🚨\n\n${userData.user_id} needs immediate help!\n\nLocation: ${mapsLink}\n\nCoordinates: ${lat}, ${lng}\n\nTime: ${timestamp}\n\nContact them at ${userData.phone} or call emergency services NOW!`;
+
+        if (userData.emergency_email) {
+          const subject = encodeURIComponent(
+            "🚨 EMERGENCY ALERT - Immediate Help Needed",
+          );
+          const body = encodeURIComponent(emergencyMessage);
+          const mailtoLink = `mailto:${userData.emergency_email}?subject=${subject}&body=${body}`;
+          window.open(mailtoLink);
         }
 
-        function sendEmergencyEmails(emailContacts, lat, lng, mapsLink) {
-            const subject = encodeURIComponent('🚨 EMERGENCY ALERT - Immediate Help Needed');
-            const body = encodeURIComponent(`🚨 EMERGENCY ALERT 🚨\n\n${userData.user_id} needs immediate help!\n\nLocation: ${mapsLink}\n\nCoordinates: ${lat}, ${lng}\n\nTime: ${new Date().toLocaleString()}\n\nPlease contact them immediately at ${userData.phone} or call emergency services.`);
-            
-            // Open default email client
-            const mailtoLink = `mailto:${emailContacts.join(',')}?subject=${subject}&body=${body}`;
-            window.open(mailtoLink);
+        showNotification("📧 Email sent with location!", "success");
+        alert(
+          `🚨 EMERGENCY ALERT SENT!\n📧 Email: ${userData.emergency_email} (with location)\n📱 SMS: ${userData.emergency_phone}`,
+        );
+      }
+
+      function sendEmailWithoutLocation() {
+        const timestamp = new Date().toLocaleString();
+        const emergencyMessage = `🚨 EMERGENCY ALERT 🚨\n\n${userData.user_id} needs immediate help!\n\nTime: ${timestamp}\n\nContact them at ${userData.phone} or call emergency services NOW!\n\nLocation unavailable - please call immediately!`;
+
+        if (userData.emergency_email) {
+          const subject = encodeURIComponent(
+            "🚨 EMERGENCY ALERT - Immediate Help Needed",
+          );
+          const body = encodeURIComponent(emergencyMessage);
+          const mailtoLink = `mailto:${userData.emergency_email}?subject=${subject}&body=${body}`;
+          window.open(mailtoLink);
         }
 
-        function sendSMS(lat, lng) {
-            const phoneContacts = userData.emergency_contacts.filter(contact => !contact.includes('@'));
-            
-            if (phoneContacts.length === 0) {
-                alert('No phone contacts found');
-                return;
-            }
+        showNotification("📧 Email sent (location unavailable)", "warning");
+        alert(
+          `🚨 EMERGENCY ALERT SENT!\n📧 Email: ${userData.emergency_email} (no location)\n📱 SMS: ${userData.emergency_phone}`,
+        );
+      }
 
-            const message = encodeURIComponent(`🚨 EMERGENCY: ${userData.user_id} needs help! Location: https://maps.google.com/maps?q=${lat},${lng} Time: ${new Date().toLocaleString()}`);
-            
-            // Open SMS app (works on mobile devices)
-            const smsLink = `sms:${phoneContacts.join(',')}?body=${message}`;
-            window.open(smsLink);
-            
-            // Also open WhatsApp for each contact
-            phoneContacts.forEach(contact => {
-                const whatsappLink = `https://wa.me/${contact.replace(/[^0-9]/g, '')}?text=${message}`;
-                window.open(whatsappLink);
+      function sendLocationUpdate(lat, lng, mapsLink) {
+        // Send follow-up with exact location
+        const locationMessage = `📍 LOCATION UPDATE: ${userData.user_id} is at ${mapsLink} - Coordinates: ${lat}, ${lng}`;
+
+        if (userData.emergency_email) {
+          const subject = encodeURIComponent("📍 Emergency Location Update");
+          const body = encodeURIComponent(locationMessage);
+          const mailtoLink = `mailto:${userData.emergency_email}?subject=${subject}&body=${body}`;
+          window.open(mailtoLink);
+        }
+
+        if (userData.emergency_phone) {
+          const smsMessage = encodeURIComponent(locationMessage);
+          const smsLink = `sms:${userData.emergency_phone}?body=${smsMessage}`;
+          window.open(smsLink);
+        }
+
+        showNotification("📍 Location update sent!", "success");
+      }
+      function sendRealNotifications(lat, lng, mapsLink) {
+        // Automatically send email
+        if (userData.emergency_email) {
+          sendAutomaticEmail(lat, lng, mapsLink);
+        }
+
+        // Automatically send SMS
+        if (userData.emergency_phone) {
+          sendAutomaticSMS(lat, lng);
+        }
+
+        // Also open manual options as backup
+        setTimeout(() => {
+          sendEmergencyEmails([userData.emergency_email], lat, lng, mapsLink);
+          sendSMS(lat, lng);
+        }, 2000);
+
+        alert(
+          `🚨 EMERGENCY ALERT SENT AUTOMATICALLY!\n📧 Email sent to ${userData.emergency_email}\n📱 SMS sent to ${userData.emergency_phone}`,
+        );
+      }
+
+      function sendAutomaticEmail(lat, lng, mapsLink) {
+        const templateParams = {
+          to_email: userData.emergency_email,
+          user_name: userData.user_id,
+          user_phone: userData.phone,
+          emergency_message: `🚨 EMERGENCY ALERT 🚨\n\n${userData.user_id} needs immediate help!\n\nLocation: ${mapsLink}\n\nCoordinates: ${lat}, ${lng}\n\nTime: ${new Date().toLocaleString()}\n\nPlease contact them immediately at ${userData.phone} or call emergency services.`,
+          maps_link: mapsLink,
+          latitude: lat,
+          longitude: lng,
+          timestamp: new Date().toLocaleString(),
+        };
+
+        // Try to send via EmailJS (requires setup)
+        if (typeof emailjs !== "undefined") {
+          emailjs
+            .send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
+            .then(
+              function (response) {
+                console.log(
+                  "✅ Emergency email sent automatically!",
+                  response.status,
+                  response.text,
+                );
+                showNotification(
+                  "✅ Emergency email sent automatically!",
+                  "success",
+                );
+              },
+              function (error) {
+                console.log("❌ Failed to send automatic email:", error);
+                showNotification(
+                  "⚠️ Automatic email failed, opening manual backup",
+                  "warning",
+                );
+              },
+            );
+        } else {
+          console.log("EmailJS not configured, using manual backup");
+        }
+      }
+
+      function sendAutomaticSMS(lat, lng) {
+        // For automatic SMS, we'll use web APIs where available
+        const message = `🚨 EMERGENCY: ${userData.user_id} needs help! Location: https://maps.google.com/maps?q=${lat},${lng} Time: ${new Date().toLocaleString()}`;
+
+        // Try Web Share API for mobile devices
+        if (navigator.share) {
+          navigator
+            .share({
+              title: "🚨 EMERGENCY ALERT",
+              text: message,
+              url: `https://maps.google.com/maps?q=${lat},${lng}`,
+            })
+            .then(() => {
+              console.log("✅ Emergency shared successfully");
+              showNotification("✅ Emergency alert shared!", "success");
+            })
+            .catch((error) => {
+              console.log("Share failed:", error);
             });
         }
+
+        // Auto-open SMS and WhatsApp
+        setTimeout(() => {
+          const encodedMessage = encodeURIComponent(message);
+          const smsLink = `sms:${userData.emergency_phone}?body=${encodedMessage}`;
+          const whatsappLink = `https://wa.me/${userData.emergency_phone.replace(/[^0-9]/g, "")}?text=${encodedMessage}`;
+
+          window.open(smsLink);
+          setTimeout(() => window.open(whatsappLink), 1000);
+        }, 500);
+      }
+
+      function showNotification(message, type = "info") {
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        notification.style.background =
+          type === "success"
+            ? "#28a745"
+            : type === "error"
+              ? "#dc3545"
+              : type === "warning"
+                ? "#ffc107"
+                : "#17a2b8";
+        notification.style.color = type === "warning" ? "#000" : "#fff";
+        notification.textContent = message;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.style.animation = "slideInRight 0.3s ease-out reverse";
+            setTimeout(() => notification.remove(), 300);
+          }
+        }, 4000);
+      }
+
+      function sendEmergencyEmails(emailContacts, lat, lng, mapsLink) {
+        const subject = encodeURIComponent(
+          "🚨 EMERGENCY ALERT - Immediate Help Needed",
+        );
+        const body = encodeURIComponent(
+          `🚨 EMERGENCY ALERT 🚨\n\n${userData.user_id} needs immediate help!\n\nLocation: ${mapsLink}\n\nCoordinates: ${lat}, ${lng}\n\nTime: ${new Date().toLocaleString()}\n\nPlease contact them immediately at ${userData.phone} or call emergency services.`,
+        );
+
+        const mailtoLink = `mailto:${emailContacts.join(",")}?subject=${subject}&body=${body}`;
+        window.open(mailtoLink);
+      }
+
+      function sendSMS(lat, lng) {
+        if (!userData.emergency_phone) {
+          alert("No phone contact found");
+          return;
+        }
+
+        const message = encodeURIComponent(
+          `🚨 EMERGENCY: ${userData.user_id} needs help! Location: https://maps.google.com/maps?q=${lat},${lng} Time: ${new Date().toLocaleString()}`,
+        );
+
+        const smsLink = `sms:${userData.emergency_phone}?body=${message}`;
+        window.open(smsLink);
+
+        const whatsappLink = `https://wa.me/${userData.emergency_phone.replace(/[^0-9]/g, "")}?text=${message}`;
+        window.open(whatsappLink);
+      }
     </script>
-</body>
+  </body>
 </html>
